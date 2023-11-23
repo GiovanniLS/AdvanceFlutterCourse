@@ -32,7 +32,7 @@ class _SignInScreen extends State<SignInScreen> {
         if (userBloc == null || !snapshot.hasData || snapshot.hasError) {
           return signInGoogleUI();
         } else {
-          return PlatziTripsCupertino();
+          return const PlatziTripsCupertino();
         }
       },
     );
@@ -59,8 +59,9 @@ class _SignInScreen extends State<SignInScreen> {
               ButtonGreen(
                 text: "Login with Gmail",
                 onPressed: () {
+                  userBloc?.signOut();
                   userBloc?.signIn().then((User user) =>
-                      print("El usuario es ${user.displayName}"));
+                      debugPrint("El usuario es ${user.displayName}"));
                 },
                 width: 300.0,
                 height: 50.0,
