@@ -1,24 +1,24 @@
-import 'package:flutter/material.dart';
 import 'package:advance_flutter_course/Place/repository/place.dart';
+import 'package:flutter/material.dart';
 
 import 'profile_place_info.dart';
 
 class ProfilePlace extends StatelessWidget {
-  String image;
   Place place;
 
-  ProfilePlace(this.image, this.place);
+  ProfilePlace(this.place, {super.key});
 
   @override
   Widget build(BuildContext context) {
     final photoCard = Container(
-      margin: EdgeInsets.only(top: 10.0, bottom: 70.0),
+      margin: const EdgeInsets.only(top: 10.0, bottom: 70.0),
       height: 220.0,
       decoration: BoxDecoration(
-          image: DecorationImage(fit: BoxFit.cover, image: AssetImage(image)),
-          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+          image: DecorationImage(
+              fit: BoxFit.cover, image: NetworkImage(place.urlImage)),
+          borderRadius: const BorderRadius.all(Radius.circular(20.0)),
           color: Colors.red,
-          boxShadow: <BoxShadow>[
+          boxShadow: const <BoxShadow>[
             BoxShadow(
                 color: Colors.black38,
                 blurRadius: 10.0,
@@ -27,7 +27,7 @@ class ProfilePlace extends StatelessWidget {
     );
 
     return Stack(
-      alignment: Alignment(0.0, 0.8),
+      alignment: const Alignment(0.0, 0.8),
       children: <Widget>[photoCard, ProfilePlaceInfo(place)],
     );
   }

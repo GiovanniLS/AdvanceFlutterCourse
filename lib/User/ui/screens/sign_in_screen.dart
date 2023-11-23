@@ -1,4 +1,5 @@
 import 'package:advance_flutter_course/User/bloc/bloc_user.dart';
+import 'package:advance_flutter_course/User/model/user.dart';
 import 'package:advance_flutter_course/platzi_trips_cupertino.dart';
 import 'package:advance_flutter_course/widgets/button_green.dart';
 import 'package:advance_flutter_course/widgets/gradient_back.dart';
@@ -60,8 +61,14 @@ class _SignInScreen extends State<SignInScreen> {
                 text: "Login with Gmail",
                 onPressed: () {
                   userBloc?.signOut();
-                  userBloc?.signIn().then((User user) =>
-                      debugPrint("El usuario es ${user.displayName}"));
+                  userBloc?.signIn().then((UserCredential userCredential) {
+                    User? user = userCredential.user;
+                    userBloc?.updateUserData(UserLocal(
+                        uid: user?.uid ?? "",
+                        name: user?.displayName ?? "",
+                        email: user?.email ?? "",
+                        photoURL: user?.photoURL ?? ""));
+                  });
                 },
                 width: 300.0,
                 height: 50.0,
