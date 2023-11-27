@@ -1,0 +1,142 @@
+import 'dart:io';
+
+import 'package:advance_flutter_course/Place/ui/widgets/title_input_location.dart';
+import 'package:advance_flutter_course/User/bloc/bloc_user.dart';
+import 'package:advance_flutter_course/widgets/button_purple.dart';
+import 'package:advance_flutter_course/widgets/gradient_back.dart';
+import 'package:advance_flutter_course/widgets/text_input.dart';
+import 'package:advance_flutter_course/widgets/title_header.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:generic_bloc_provider/generic_bloc_provider.dart';
+
+import '../../model/place.dart';
+import '../widgets/card_image.dart';
+
+class AddPlaceScreen extends StatefulWidget {
+  final File? image;
+
+  const AddPlaceScreen({super.key, required this.image});
+
+  @override
+  State<StatefulWidget> createState() {
+    return _AddPlaceScreen();
+  }
+}
+
+class _AddPlaceScreen extends State<AddPlaceScreen> {
+  @override
+  Widget build(BuildContext context) {
+    UserBloc userBloc = BlocProvider.of<UserBloc>(context);
+    final _controllerTitlePlace = TextEditingController();
+    final _controllerDescriptionPlace = TextEditingController();
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          GradientBack(300.0),
+          Row(
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.only(top: 25.0, left: 5.0),
+                child: SizedBox(
+                  height: 45.0,
+                  width: 45.0,
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.keyboard_arrow_left,
+                      color: Colors.white,
+                      size: 45.0,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ),
+              Flexible(
+                  child: Container(
+                padding:
+                    const EdgeInsets.only(top: 45.0, left: 20.0, right: 10.0),
+                child: const TitleHeader("Add a new Place"),
+              ))
+            ],
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 120.0, bottom: 20.0),
+            child: ListView(
+              children: <Widget>[
+                Container(
+                  alignment: Alignment.center,
+                  child: CardImageWithFabIcon(
+                    pathImage: widget.image?.path ?? "",
+                    iconData: Icons.camera_alt,
+                    width: 350.0,
+                    height: 250.0,
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+                  child: TextInput(
+                    hintText: "Title",
+                    inputType: null,
+                    maxLines: 1,
+                    controller: _controllerTitlePlace,
+                  ),
+                ),
+                TextInput(
+                  hintText: "Description",
+                  inputType: TextInputType.multiline,
+                  controller: _controllerDescriptionPlace,
+                  maxLines: 4,
+                ),
+                Container(
+                  margin: const EdgeInsets.only(top: 20.0),
+                  child: const TextInputLocation(
+                    hintText: "Add location",
+                    iconData: Icons.location_on,
+                  ),
+                ),
+                SizedBox(
+                  width: 70.0,
+                  child: ButtonPurple(
+                      buttonText: "Add Place",
+                      onPressed: () {
+                        userBloc.currentUser().then((User? user) {
+                          if (user != null) {
+                            String uid = user.uid;
+                            String path =
+                                "$uid/${DateTime.now().toString()}.jpg";
+                            userBloc
+                                .uploadFile(path, widget.image ?? File(""))
+                                .then((UploadTask uploadTask) {
+                              uploadTask.then((TaskSnapshot snapshot) {
+                                snapshot.ref.getDownloadURL().then((urlImage) {
+                                  debugPrint("URLIMAGE $urlImage");
+                                  userBloc
+                                      .updatePlaceData(Place(
+                                    name: _controllerTitlePlace.text,
+                                    urlImage: urlImage,
+                                    description:
+                                        _controllerDescriptionPlace.text,
+                                    likes: 0,
+                                  ))
+                                      .whenComplete(() {
+                                    debugPrint("Terminó");
+                                    Navigator.pop(context);
+                                  });
+                                });
+                              });
+                            });
+                          }
+                        });
+                      }),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}

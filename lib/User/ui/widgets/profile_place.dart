@@ -1,6 +1,6 @@
-import 'package:advance_flutter_course/Place/repository/place.dart';
 import 'package:flutter/material.dart';
 
+import '../../../Place/model/Place.dart';
 import 'profile_place_info.dart';
 
 class ProfilePlace extends StatelessWidget {
@@ -15,7 +15,7 @@ class ProfilePlace extends StatelessWidget {
       height: 220.0,
       decoration: BoxDecoration(
           image: DecorationImage(
-              fit: BoxFit.cover, image: NetworkImage(place.urlImage)),
+              fit: BoxFit.cover, image: NetworkImage(place.urlImage ?? "")),
           borderRadius: const BorderRadius.all(Radius.circular(20.0)),
           color: Colors.red,
           boxShadow: const <BoxShadow>[

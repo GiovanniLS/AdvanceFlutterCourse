@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../Place/model/Place.dart';
+import '../../Place/model/place.dart';
 
 class UserLocal {
   final String? uid;

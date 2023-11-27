@@ -56,5 +56,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Advance course Flutter quiere tomar una foto. ¿Podemos usar tu cámara?</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Advance course Flutter quiere tomar una foto. ¿Podemos usar tu cámara?</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Advance course Flutter quiere tomar una foto. ¿Podemos usar tu cámara?</string>
 </dict>
 </plist>

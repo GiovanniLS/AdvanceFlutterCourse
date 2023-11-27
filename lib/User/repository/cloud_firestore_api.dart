@@ -1,10 +1,14 @@
 import 'package:advance_flutter_course/User/model/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import '../../Place/model/place.dart';
 
 class CloudFirestoreAPI {
   final String USERS = "users";
-  final String PLACE = "places";
+  final String PLACES = "places";
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   void updateUserData(UserLocal user) async {
@@ -18,5 +22,23 @@ class CloudFirestoreAPI {
       "myFavoritePlaces": user.myFavoritePlaces,
       "lastSignIn": DateTime.now(),
     }, SetOptions(merge: true));
+  }
+
+  Future<void> updatePlaceData(Place place) async {
+    CollectionReference refPlaces = _db.collection(PLACES);
+    User? user = _auth.currentUser;
+    await refPlaces.add({
+      'name': place.name,
+      'descrption': place.description,
+      'likes': place.likes,
+      'userOwner': _db.doc("$USERS/${user?.uid}")
+    }).then((DocumentReference dr) {
+      dr.get().then((DocumentSnapshot snapshot) {
+        DocumentReference refUsers = _db.collection(USERS).doc(user?.uid ?? "");
+        refUsers.update({
+          "myPlaces": FieldValue.arrayUnion([_db.doc("$PLACES/${snapshot.id}")])
+        });
+      });
+    });
   }
 }
