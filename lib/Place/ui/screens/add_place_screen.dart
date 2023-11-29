@@ -11,7 +11,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 
-import '../../model/place.dart';
+import '../../model/Place.dart';
 import '../widgets/card_image.dart';
 
 class AddPlaceScreen extends StatefulWidget {

@@ -23,14 +23,14 @@ class ProfilePlaceInfo extends StatelessWidget {
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
+              /*Text(
                 this.place.name,
                 style: const TextStyle(
                     color: Color.fromRGBO(0, 0, 0, 0.4),
                     fontFamily: 'Lato',
                     fontSize: 12.0,
                     fontWeight: FontWeight.bold),
-              ),
+              ),*/
               Text(
                 this.place.description,
                 style: const TextStyle(
@@ -71,7 +71,13 @@ class ProfilePlaceInfo extends StatelessWidget {
 
     return Stack(
       alignment: const Alignment(0.8, 1.25),
-      children: <Widget>[card, FloatingActionButtonGreen()],
+      children: <Widget>[
+        card,
+        FloatingActionButtonGreen(
+          iconData: Icons.favorite_border,
+          onPressed: () {},
+        )
+      ],
     );
   }
 }

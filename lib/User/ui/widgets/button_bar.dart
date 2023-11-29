@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:advance_flutter_course/User/bloc/bloc_user.dart';
 import 'package:flutter/material.dart';
+import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../Place/ui/screens/add_place_screen.dart';
@@ -22,6 +23,7 @@ class ButtonsBar extends StatefulWidget {
 class _ButtonsBar extends State<ButtonsBar> {
   @override
   Widget build(BuildContext context) {
+    widget.userBloc = BlocProvider.of(context);
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 10.0),
         child: Row(
