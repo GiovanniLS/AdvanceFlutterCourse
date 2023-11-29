@@ -40,7 +40,7 @@ class PlatziTripsCupertino extends StatelessWidget {
                 builder: (BuildContext context) {
                   return BlocProvider<UserBloc>(
                     bloc: UserBloc(),
-                    child: const ProfileTrips(),
+                    child: ProfileTrips(),
                   );
                 },
               );
